@@ -1,16 +1,14 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { Card } from './components/atoms/Card/Card';
-import { ThemeProvider } from 'styled-components';
-import {getTheme} from './themes/default.js'
+import Home from './components/pages/Home'
+import refreshTokenInterceptor from "./config/refreshTokenInterceptor";
+import {store} from "./app/store";
+
+
 function App() {
+  refreshTokenInterceptor(store);
   return (
-    <ThemeProvider theme={getTheme()}>
-    <div className="App">
-      Ganeshka toolkit
-    </div>
-    </ThemeProvider>
+    <Home></Home>
   );
 }
 
