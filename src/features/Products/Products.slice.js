@@ -13,7 +13,7 @@ export const fetchProducts = createAsyncThunk(
 
 export const addProduct = createAsyncThunk(
     'product/addOne',
-    async ({ name, description, price }) => {
+    async ({ name, description, price, produceradress }) => {
 
         return await fetch(process.env.REACT_APP_URL_BACK + "/items/products", {
             method: 'POST',
@@ -23,7 +23,8 @@ export const addProduct = createAsyncThunk(
             body: JSON.stringify({
                 name: name,
                 description: description,
-                price: price
+                price: price,
+                produceradress: produceradress
             })
         })
             .then(response => response.json())
