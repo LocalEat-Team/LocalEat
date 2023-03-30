@@ -1,10 +1,11 @@
 import React, {useState, useEffect}  from "react"
 import { useDispatch, useSelector} from 'react-redux'
 import { store, addProduct, productActions } from '../../../app/store'
-import { TextField } from "@mui/material"
-import { Button } from "@mui/material"
+import { TextField, Button, Fab  } from "@mui/material"
 import IconButton from '@mui/material/IconButton'
 import CropFreeIcon from '@mui/icons-material/CropFree';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+
 
 // import { ScanProduct } from "../ScanProduct/ScanProduct"
 
@@ -13,10 +14,11 @@ export const AddProductForm = () => {
     const dispatch = useDispatch()
     const productStatus = useSelector(state => state.products.status)
     
-    const [name, setName] = useState("");
+    const [productname, setProductName] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
     const [produceradress, setProducerAdress] = useState("");
+    const [productimg, setProductImg] = useState("");
 
     const [barcodeproduct, setBarcodeProduct] = useState("");
 
@@ -40,8 +42,8 @@ if (scan === false) {
                     type="text"
                     label="Nom"
                     variant="outlined"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={productname}
+                    onChange={(e) => setProductName(e.target.value)}
                 />
                 <br/>
                 <TextField
@@ -70,23 +72,45 @@ if (scan === false) {
                     onChange={(e) => setProducerAdress(e.target.value)}
                 />
                 <br/>
-                <p>Ce produit sera enregistré à vos coordonnées GPS.</p>
+                <br/>
+                <label htmlFor="upload-photo">
+                <TextField
+                    style={{ display: "none", width: "350px", margin: "5px" }}
+                    id="upload-photo"
+                    name="upload-photo"
+                    type="file"
+                    value={productimg}
+                    onChange={(e) => setProductImg(e.target.value)}
+                />
+                <IconButton 
+                    color="primary"
+                    size="medium"
+                    component="span"
+                    aria-label="add"
+                    variant="contained">
+                    <AddPhotoAlternateIcon /> Importer une image
+                </IconButton>
+                </label>
+                <br/>
+                <br/>
                 <Button onClick={() => {store.dispatch(addProduct({
-                    name : name,
+                    productname : productname,
                     description : description,
                     price : price,
-                    produceradress: produceradress
+                    produceradress: produceradress,
+                    productimg: '.png'
                 }
                 ))
                 console.log("Status : "+productStatus)}} variant="contained" color="primary" style={{ width: "200px", margin: "5px", marginLeft: 10 }}>
                     Ajouter
                 </Button>
 
-                <IconButton 
+                <IconButton
+                    color="primary"
                     aria-label="scan a product" 
                     size='large'
                     variant="contained"
-                    sx={{ color: 'green', marginLeft: 5 }}
+                    sx={{ marginLeft: 5 }}
                     onClick={() => setScanner(true)}>
                     <CropFreeIcon />
                 </IconButton>
