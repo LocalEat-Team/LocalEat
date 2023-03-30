@@ -38,7 +38,10 @@ export function AddMenu() {
             )}
           </div>
         </div>
-        <BottomNavBar className="nav-bar"></BottomNavBar>
+        <div className="nav-bar">
+          <div className="active-icon"></div>
+          <BottomNavBar className="nav-bar"></BottomNavBar>
+        </div>
       </div>
     </>
   );
