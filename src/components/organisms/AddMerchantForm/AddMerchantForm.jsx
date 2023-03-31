@@ -1,11 +1,11 @@
-import React, {useState, useEffect}  from "react"
-import { useDispatch, useSelector} from 'react-redux'
-import { store, addShop, shopActions } from '../../../app/store'
-import { TextField } from "@mui/material"
-import { Button } from "@mui/material"
-
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { store, addShop, shopActions } from "../../../app/store";
+import { TextField } from "@mui/material";
+import { Button } from "@mui/material";
 
 export const AddMerchantForm = () => {
+
     const dispatch = useDispatch()
     const shopStatus = useSelector(state => state.shops.status)
     
@@ -22,7 +22,6 @@ export const AddMerchantForm = () => {
         }
         dispatch(shopActions.resetStatus())
       }, [shopStatus, dispatch])
-
 
     return(
         <div style={{textAlign: "center"}}>
@@ -87,5 +86,5 @@ export const AddMerchantForm = () => {
             </form>
         </div>
     )
-
-}
+  );
+};
