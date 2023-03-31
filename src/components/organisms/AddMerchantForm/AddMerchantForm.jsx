@@ -98,10 +98,12 @@ export const AddMerchantForm = () => {
                      Location_coordinates: x.length == 0 && y.length == 0 ? location : [x, y]
                 }
                 ))
-                console.log("Status : "+shopStatus)}} variant="contained" color="primary" style={{ width: "200px", margin: "5px" }}>
+                console.log("Statuss : "+shopStatus)}} variant="contained" color="primary" style={{ width: "200px", margin: "5px" }}>
                     Ajouter
                 </Button>
             </form>
         </div>
   );
+
 };
+
