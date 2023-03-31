@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch} from 'react-redux'
 import { store, fetchShops } from '../../../app/store';
 import { MapContainer, TileLayer,  Marker, Popup } from 'react-leaflet';
@@ -40,7 +40,7 @@ export const MerchantMap = ({ ...props }) => {
 
     return (
         <div id="map">
-            <MapContainer center={position} zoom={13} style={{height: "80vh"}} onLoad={() => store.dispatch(fetchShops())}>
+            <MapContainer center={position} zoom={12} style={{height: "80vh"}} onLoad={() => store.dispatch(fetchShops())}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

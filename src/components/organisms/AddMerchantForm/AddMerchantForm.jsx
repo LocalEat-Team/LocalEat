@@ -15,6 +15,24 @@ export const AddMerchantForm = () => {
     const [x, setX] = useState("");
     const [y, setY] = useState("");
 
+    const [location, setLocation] = useState(null);
+
+    useEffect(() => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            position => {
+              const { latitude, longitude } = position.coords;
+              setLocation([latitude.toString(), longitude.toString()]);
+            },
+            error => {
+              console.error(error);
+            }
+          );
+        } else {
+          console.error("La géolocalisation n'est pas supportée par ce navigateur");
+        }
+    }, []);
+
     useEffect(() => {
         if (shopStatus === 'fulfilled') {
             
@@ -77,7 +95,7 @@ export const AddMerchantForm = () => {
                      shopName: shopName,
                      shopDescription: shopDescription,
                      shopAdress: shopAdress,
-                     Location_coordinates: [x, y]
+                     Location_coordinates: x.length == 0 && y.length == 0 ? location : [x, y]
                 }
                 ))
                 console.log("Status : "+shopStatus)}} variant="contained" color="primary" style={{ width: "200px", margin: "5px" }}>
