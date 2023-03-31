@@ -11,6 +11,17 @@ export const fetchProducts = createAsyncThunk(
     }
 )
 
+export const infoProducts = createAsyncThunk(
+    'items/productsinfo',
+    async (codeBar) => {
+        return await fetch(process.env.REACT_APP_URL_BACK + "/items/productsinfo/"+codeBar)
+            .then(product => 
+               product.json()
+            )
+            .catch(err => console.log("erreur dans la récupèration des infos complémentaires des produits : ", err))
+    }
+)
+
 export const addProduct = createAsyncThunk(
     'product/addOne',
     async ({ productname, description, price, produceradress, productimg }) => {
@@ -55,7 +66,8 @@ const ProductServices = createSlice({
     name: 'products',
     initialState: {
         productsList: [],
-        status: 'idle'
+        status: 'idle',
+        lastProductInfo: null
     },
     reducers: {
         resetStatus(state) {
@@ -76,6 +88,10 @@ const ProductServices = createSlice({
                 fetchProducts()
                 state.status = action.meta.requestStatus
             })
+            .addCase(infoProducts.fulfilled, (state, action) => {
+                state.lastProductInfo = action.payload
+                console.log("state.lastProductInfo :",state.lastProductInfo )
+                })
     }
 })
 
