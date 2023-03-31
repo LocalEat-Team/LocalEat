@@ -85,6 +85,5 @@ export const AddMerchantForm = () => {
                 </Button>
             </form>
         </div>
-    )
   );
 };
