@@ -131,55 +131,64 @@ export const AddProductForm = () => {
   } else if (scan === true) {
     return (
       <div style={{ textAlign: "center" }}>
-        <p>Scanner</p>
-        <Button onClick={() => {
-      
-      navigator.mediaDevices.getUserMedia({ video: true })
-      .then(() => {
-        Quagga.init({
-          inputStream : {
-              name : "Live",
-              type : "LiveStream",
-              target: document.querySelector('.text'), 
-              constraints: {
-                 width: 520,
-                 height: 400,                  
-                 facingMode: "environment"  //"environment" for back camera, "user" front camera
-                 }    
-          },
-          decoder : {
-              readers : ["ean_reader"]
-          }
-          }, function(err) {
-              if (err) {
-                  console.log(err);
-                  return
-              }
-              console.log("Initialization finished. Ready to start");
-              Quagga.start();
-              Quagga.onDetected((data) => {
-                alert("Code barre : "+data.codeResult.code);
-                setBarcodeProduct(data.codeResult.code)
-                Quagga.stop()
+        <p></p>
+        <Button
+          onClick={() => {
+            navigator.mediaDevices
+              .getUserMedia({ video: true })
+              .then(() => {
+                Quagga.init(
+                  {
+                    inputStream: {
+                      name: "Live",
+                      type: "LiveStream",
+                      target: document.querySelector(".text"),
+                      constraints: {
+                        width: 520,
+                        height: 400,
+                        facingMode: "environment", //"environment" for back camera, "user" front camera
+                      },
+                    },
+                    decoder: {
+                      readers: ["ean_reader"],
+                    },
+                  },
+                  function (err) {
+                    if (err) {
+                      console.log(err);
+                      return;
+                    }
+                    console.log("Initialization finished. Ready to start");
+                    Quagga.start();
+                    Quagga.onDetected((data) => {
+                      alert("Code barre : " + data.codeResult.code);
+                      setBarcodeProduct(data.codeResult.code);
+                      Quagga.stop();
+                    });
+                  }
+                );
               })
-          });
-        
-      })
-      .catch((err) => {
-        console.log(err.name + ": " + err.message);
-      })          
-
-            }} variant="contained" color="primary" style={{ width: "200px", margin: "5px" }}>
-                QrCode
-            </Button>
-       <div className="text"></div>
-
-
+              .catch((err) => {
+                console.log(err.name + ": " + err.message);
+              });
+          }}
+          variant="contained"
+          color="primary"
+          style={{
+            width: "250px",
+            margin: "5px",
+            backgroundColor: "#00000030",
+            color: "#000000",
+          }}
+        >
+          Scanner QrCode
+        </Button>
+        <div className="text"> ou </div>
 
         <TextField
           style={{ width: "350px", margin: "5px" }}
           type="text"
-          label="Code barre"
+          label="Entrer le code barre"
           variant="outlined"
           value={barcodeproduct}
           onChange={(e) => setBarcodeProduct(e.target.value)}
@@ -188,7 +197,12 @@ export const AddProductForm = () => {
           onClick={() => setScanner(false)}
           variant="contained"
           color="primary"
-          style={{ width: "200px", margin: "5px", marginLeft: 10 }}
+          style={{
+            width: "200px",
+            margin: "5px",
+            marginLeft: 10,
+            backgroundColor: "#77CCBB",
+          }}
         >
           Envoyer
         </Button>
@@ -196,7 +210,13 @@ export const AddProductForm = () => {
           onClick={() => setScanner(false)}
           variant="contained"
           color="primary"
-          style={{ width: "200px", margin: "5px", marginLeft: 10 }}
+          style={{
+            width: "200px",
+            margin: "5px",
+            marginLeft: 10,
+            backgroundColor: "#D9D9D970",
+            color: "#000000",
+          }}
         >
           Retour
         </Button>

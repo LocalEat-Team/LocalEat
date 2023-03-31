@@ -15,7 +15,7 @@
 }
 
 .form.add{
-    margin-top: 60px;
+    margin-top: 40px;
     text-align: center;
 }
 
@@ -38,6 +38,7 @@ button.cancel{
     width: 100px;
     margin : 20px;
     margin-top: 40px;
+    color: #FFFFFF99;
 }
 
 
