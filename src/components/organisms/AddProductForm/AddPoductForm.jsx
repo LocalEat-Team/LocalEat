@@ -5,7 +5,7 @@ import { TextField, Button, Fab } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import CropFreeIcon from "@mui/icons-material/CropFree";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-
+import Quagga from "quagga";
 // import { ScanProduct } from "../ScanProduct/ScanProduct"
 
 export const AddProductForm = () => {
@@ -132,6 +132,50 @@ export const AddProductForm = () => {
     return (
       <div style={{ textAlign: "center" }}>
         <p>Scanner</p>
+        <Button onClick={() => {
+      
+      navigator.mediaDevices.getUserMedia({ video: true })
+      .then(() => {
+        Quagga.init({
+          inputStream : {
+              name : "Live",
+              type : "LiveStream",
+              target: document.querySelector('.text'), 
+              constraints: {
+                 width: 520,
+                 height: 400,                  
+                 facingMode: "environment"  //"environment" for back camera, "user" front camera
+                 }    
+          },
+          decoder : {
+              readers : ["ean_reader"]
+          }
+          }, function(err) {
+              if (err) {
+                  console.log(err);
+                  return
+              }
+              console.log("Initialization finished. Ready to start");
+              Quagga.start();
+              Quagga.onDetected((data) => {
+                alert("Code barre : "+data.codeResult.code);
+                setBarcodeProduct(data.codeResult.code)
+                Quagga.stop()
+              })
+          });
+        
+      })
+      .catch((err) => {
+        console.log(err.name + ": " + err.message);
+      })          
+
+            }} variant="contained" color="primary" style={{ width: "200px", margin: "5px" }}>
+                QrCode
+            </Button>
+       <div className="text"></div>
+
+
+
         <TextField
           style={{ width: "350px", margin: "5px" }}
           type="text"
