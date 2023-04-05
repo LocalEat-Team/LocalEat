@@ -4,30 +4,42 @@ export const fetchProducts = createAsyncThunk(
     'product/getAll',
     async () => {
         return await fetch(process.env.REACT_APP_URL_BACK + "/items/products")
-            .then(response => response.json())
-            .then(product => product.data)
+            .then(product => 
+               product.json()
+            )
             .catch(err => console.log("erreur dans la récupèration des produits : ", err))
+    }
+)
+
+export const infoProducts = createAsyncThunk(
+    'items/productsinfo',
+    async (codeBar) => {
+        return await fetch(process.env.REACT_APP_URL_BACK + "/items/productsinfo/"+codeBar)
+            .then(product => 
+               product.json()
+            )
+            .catch(err => console.log("erreur dans la récupèration des infos complémentaires des produits : ", err))
     }
 )
 
 export const addProduct = createAsyncThunk(
     'product/addOne',
-    async ({ name, description, price }) => {
+    async ({ productname, description, price, produceradress, productimg }) => {
 
         return await fetch(process.env.REACT_APP_URL_BACK + "/items/products", {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: JSON.stringify({
-                name: name,
+                productname: productname,
                 description: description,
-                price: price
+                price: price,
+                produceradress: produceradress,
+                productimg: productimg
             })
         })
-            .then(response => response.json())
-            .then(product => product.data)
-            .catch(err => console.log("erreur dans l'ajout du produit : ", err))
+        .then(product => 
+            product.json()
+         )
+        .catch(err => console.log("erreur dans l'ajout du produit : ", err))
     }
 )
 
@@ -54,7 +66,8 @@ const ProductServices = createSlice({
     name: 'products',
     initialState: {
         productsList: [],
-        status: 'idle'
+        status: 'idle',
+        lastProductInfo: null
     },
     reducers: {
         resetStatus(state) {
@@ -75,6 +88,10 @@ const ProductServices = createSlice({
                 fetchProducts()
                 state.status = action.meta.requestStatus
             })
+            .addCase(infoProducts.fulfilled, (state, action) => {
+                state.lastProductInfo = action.payload
+                console.log("state.lastProductInfo :",state.lastProductInfo )
+                })
     }
 })
 

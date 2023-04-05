@@ -1,17 +1,37 @@
-import React, {useState, useEffect}  from "react"
-import { useDispatch, useSelector} from 'react-redux'
-import { store, addShop, shopActions } from '../../../app/store'
-import { TextField } from "@mui/material"
-import { Button } from "@mui/material"
-
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { store, addShop, shopActions } from "../../../app/store";
+import { TextField } from "@mui/material";
+import { Button } from "@mui/material";
 
 export const AddMerchantForm = () => {
+
     const dispatch = useDispatch()
     const shopStatus = useSelector(state => state.shops.status)
     
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [horaire, setHoraire] = useState("");
+    const [shopName, setShopName] = useState("");
+    const [shopDescription, setShopDescription] = useState("");
+    const [shopAdress, setShopAdress] = useState("");
+    const [x, setX] = useState("");
+    const [y, setY] = useState("");
+
+    const [location, setLocation] = useState(null);
+
+    useEffect(() => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            position => {
+              const { latitude, longitude } = position.coords;
+              setLocation([latitude.toString(), longitude.toString()]);
+            },
+            error => {
+              console.error(error);
+            }
+          );
+        } else {
+          console.error("La géolocalisation n'est pas supportée par ce navigateur");
+        }
+    }, []);
 
     useEffect(() => {
         if (shopStatus === 'fulfilled') {
@@ -20,7 +40,6 @@ export const AddMerchantForm = () => {
         }
         dispatch(shopActions.resetStatus())
       }, [shopStatus, dispatch])
-
 
     return(
         <div style={{textAlign: "center"}}>
@@ -31,8 +50,8 @@ export const AddMerchantForm = () => {
                     type="text"
                     label="Nom"
                     variant="outlined"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={shopName}
+                    onChange={(e) => setShopName(e.target.value)}
                 />
                 <br/>
                 <TextField
@@ -40,31 +59,51 @@ export const AddMerchantForm = () => {
                     type="text"
                     label="Description"
                     variant="outlined"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    value={shopDescription}
+                    onChange={(e) => setShopDescription(e.target.value)}
                 />
                 <br/>
                 <TextField
                     style={{ width: "350px", margin: "5px" }}
                     type="text"
-                    label="Horaire"
+                    label="Adresse"
                     variant="outlined"
-                    value={horaire}
-                    onChange={(e) => setHoraire(e.target.value)}
+                    value={shopAdress}
+                    onChange={(e) => setShopAdress(e.target.value)}
+                />
+                <br/>
+                <TextField
+                    style={{ width: "350px", margin: "5px" }}
+                    type="text"
+                    label="X"
+                    variant="outlined"
+                    value={x}
+                    onChange={(e) => setX(e.target.value)}
+                />
+                <br/>
+                <TextField
+                    style={{ width: "350px", margin: "5px" }}
+                    type="text"
+                    label="Y"
+                    variant="outlined"
+                    value={y}
+                    onChange={(e) => setY(e.target.value)}
                 />
                 <br/>
                 <p>Cette boutique sera enregistré à vos coordonnées GPS.</p>
                 <Button onClick={() => {store.dispatch(addShop({
-                    name : name,
-                    description : description,
-                    horaire : horaire
+                     shopName: shopName,
+                     shopDescription: shopDescription,
+                     shopAdress: shopAdress,
+                     Location_coordinates: x.length == 0 && y.length == 0 ? location : [x, y]
                 }
                 ))
-                console.log("Status : "+shopStatus)}} variant="contained" color="primary" style={{ width: "200px", margin: "5px" }}>
+                console.log("Statuss : "+shopStatus)}} variant="contained" color="primary" style={{ width: "200px", margin: "5px" }}>
                     Ajouter
                 </Button>
             </form>
         </div>
-    )
+  );
 
-}
+};
+
